@@ -16,6 +16,7 @@ void AALearningVariablesAndOperators::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	/*
 	//Declaring variables and assigning values
 	bool bAlive = true;
 	int Age = 27;
@@ -23,6 +24,7 @@ void AALearningVariablesAndOperators::BeginPlay()
 	float Height = 175.8f;
 	double Pie = 3.141592653589793;
 	FString CharName = "Kennedy";
+	*/
 
 	/* Logging Variables
 	UE_LOG(LogTemp, Display, TEXT("Basic Log Message"));
@@ -41,11 +43,14 @@ void AALearningVariablesAndOperators::BeginPlay()
 	*/
 
 	// Number operators
+	/*
 	int LifeTimesLived;
 	LifeTimesLived = Age / 4;
 
 	UE_LOG(LogTemp, Display, TEXT("LifeTimesLived = %d"), LifeTimesLived);
+	*/
 
+	UE_LOG(LogTemp, Display, TEXT("New Player Spawned.\nName: %s\nAge: %d\nWeight: %f"), *PlayerName, Age, Weight);
 }
 
 // Called every frame

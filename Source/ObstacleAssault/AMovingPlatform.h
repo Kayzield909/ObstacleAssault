@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ALearningVariablesAndOperators.generated.h"
+#include "AMovingPlatform.generated.h"
 
 UCLASS()
-class OBSTACLEASSAULT_API AALearningVariablesAndOperators : public AActor
+class OBSTACLEASSAULT_API AAMovingPlatform : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AALearningVariablesAndOperators();
+	AAMovingPlatform();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,17 +24,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	// Learning Cpp member variables
-	UPROPERTY(EditAnywhere)
-	FString PlayerName = "Kay";
-	
-	UPROPERTY(EditAnywhere) 
-	int Age = 27;
-	
-	UPROPERTY(EditAnywhere)
-	float Weight = 78.9f;
-
 	UPROPERTY(EditAnywhere)
 	FVector StartLocation = FVector(0.0f, 0.0f, 0.0f);
+
+	UPROPERTY(EditAnywhere)
+	FVector PlatformVelocity = FVector(0.0f, 0.0f, 0.0f);
 };
-  
