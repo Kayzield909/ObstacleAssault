@@ -11,12 +11,17 @@ AAMovingPlatform::AAMovingPlatform()
 
 }
 
+void MyTestFunction(float Parameter1, int Parameter2)
+{
+	UE_LOG(LogTemp, Display, TEXT("This is a test function.\nParameter 1 = %f\nParameter 2 = %d"), Parameter1, Parameter2);
+}
+
 // Called when the game starts or when spawned
 void AAMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// SetActorLocation(StartLocation);
+	StartLocation = GetActorLocation();
 	
 }
 
@@ -29,9 +34,35 @@ void AAMovingPlatform::Tick(float DeltaTime)
 	StartLocation.Z++; //Increase Z position by 1 each frame
 	*/
 
+	MovePlatform(DeltaTime);
+	RotatePlatform(DeltaTime);
+	
+}
+
+void AAMovingPlatform::MovePlatform(float DeltaTime)
+{
+	// Moves platform in X, Y or Z at PlatformVelocity cm/s
 	FVector CurrentLocation = GetActorLocation();
 	CurrentLocation = CurrentLocation + (PlatformVelocity * DeltaTime);
 	SetActorLocation(CurrentLocation);
 
+	DistanceMoved = FVector::Dist(StartLocation, CurrentLocation);
+
+	if(DistanceMoved >= MovementDistance) // Reverses platform direction while fixing overshoot
+	{
+		PlatformVelocity = -PlatformVelocity;
+		
+		FVector MoveDirection = PlatformVelocity.GetSafeNormal();
+		FVector TargetLocation = StartLocation + MoveDirection * MovementDistance;
+		SetActorLocation(TargetLocation);
+		StartLocation = TargetLocation;
+	}
 }
 
+void AAMovingPlatform::RotatePlatform(float DeltaTime)
+{
+	// Rotates platform in X, Y or Z at PlatformRotationRate deg/s
+	FRotator CurrentRotation = GetActorRotation();
+	CurrentRotation = CurrentRotation + (PlatformRotationRate * DeltaTime);
+	SetActorRotation(CurrentRotation);
+}
