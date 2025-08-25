@@ -23,6 +23,10 @@ void AAMovingPlatform::BeginPlay()
 
 	StartLocation = GetActorLocation();
 	
+	if (bFollowsEllipticalPath == true)
+	{
+		SetEllipticalPosition(Centre_h_k, Length_a_b, Time_t);
+	}
 }
 
 // Called every frame
@@ -34,28 +38,40 @@ void AAMovingPlatform::Tick(float DeltaTime)
 	StartLocation.Z++; //Increase Z position by 1 each frame
 	*/
 
-	MovePlatform(DeltaTime);
-	RotatePlatform(DeltaTime);
 	
+	RotatePlatform(DeltaTime);
+
+	if (bFollowsEllipticalPath == false)
+	{
+		MovePlatform(DeltaTime);
+	}
+	else
+	{
+		Time_t = Time_t + (DeltaTime_t * DeltaTime);
+		SetEllipticalPosition(Centre_h_k, Length_a_b, Time_t);
+	}
 }
 
 void AAMovingPlatform::MovePlatform(float DeltaTime)
 {
-	// Moves platform in X, Y or Z at PlatformVelocity cm/s
-	FVector CurrentLocation = GetActorLocation();
-	CurrentLocation = CurrentLocation + (PlatformVelocity * DeltaTime);
-	SetActorLocation(CurrentLocation);
 
-	DistanceMoved = FVector::Dist(StartLocation, CurrentLocation);
-
+	DistanceMoved = GetDistanceMoved();
+	
 	if(DistanceMoved >= MovementDistance) // Reverses platform direction while fixing overshoot
 	{
-		PlatformVelocity = -PlatformVelocity;
-		
 		FVector MoveDirection = PlatformVelocity.GetSafeNormal();
 		FVector TargetLocation = StartLocation + MoveDirection * MovementDistance;
 		SetActorLocation(TargetLocation);
 		StartLocation = TargetLocation;
+
+		PlatformVelocity = -PlatformVelocity;
+	}
+	else
+	{
+		// Moves platform in X, Y or Z at PlatformVelocity cm/s
+		FVector CurrentLocation = GetActorLocation();
+		CurrentLocation = CurrentLocation + (PlatformVelocity * DeltaTime);
+		SetActorLocation(CurrentLocation);
 	}
 }
 
@@ -65,4 +81,28 @@ void AAMovingPlatform::RotatePlatform(float DeltaTime)
 	FRotator CurrentRotation = GetActorRotation();
 	CurrentRotation = CurrentRotation + (PlatformRotationRate * DeltaTime);
 	SetActorRotation(CurrentRotation);
+}
+
+float AAMovingPlatform::GetDistanceMoved()
+{
+	FVector CurrentLocation = GetActorLocation();
+	DistanceMoved = FVector::Dist(StartLocation, CurrentLocation);
+
+	return DistanceMoved;
+}
+
+FVector AAMovingPlatform::SetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t)
+{
+	FVector2D NewEllipticalPosition = GetEllipticalPosition(Centre_h_k, Length_a_b, Time_t);
+	FVector NewEllipticalPos3D(NewEllipticalPosition.X, NewEllipticalPosition.Y, GetActorLocation().Z);
+	SetActorLocation(NewEllipticalPos3D);
+	return FVector();
+}
+
+FVector2D AAMovingPlatform::GetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t)
+{
+	float x = Centre_h_k.X + Length_a_b.X * cos(Time_t);
+	float y = Centre_h_k.Y + Length_a_b.Y * sin(Time_t);
+
+	return FVector2D(x,y);
 }

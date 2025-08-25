@@ -26,6 +26,12 @@ public:
 	void MovePlatform(float DeltaTime);
 
 	void RotatePlatform(float DeltaTime);
+
+	float GetDistanceMoved();
+
+	FVector2D GetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t);
+	FVector SetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t);
+
 public:
 
 	FVector StartLocation;
@@ -41,4 +47,17 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	FRotator PlatformRotationRate = FRotator(0.0f, 0.0f, 0.0f);
+
+	// Elliptical Orbit
+	UPROPERTY(EditAnywhere)
+	bool bFollowsEllipticalPath;
+	UPROPERTY(EditAnywhere)
+	float Time_t = 0.0f;
+	UPROPERTY(EditAnywhere)
+	float DeltaTime_t = 1.0f;
+
+	UPROPERTY(EditAnywhere)
+	FVector2D Centre_h_k = FVector2D (0.0f, 0.0f);
+	UPROPERTY(EditAnywhere)
+	FVector2D Length_a_b = FVector2D(100.0f, 50.0f);
 };
