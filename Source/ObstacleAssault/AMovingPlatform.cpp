@@ -91,7 +91,7 @@ float AAMovingPlatform::GetDistanceMoved()
 	return DistanceMoved;
 }
 
-FVector AAMovingPlatform::SetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t)
+FVector AAMovingPlatform::SetEllipticalPosition(FVector2D InCentre, FVector2D InLength, float InTime)
 {
 	FVector2D NewEllipticalPosition = GetEllipticalPosition(Centre_h_k, Length_a_b, Time_t);
 	FVector NewEllipticalPos3D(NewEllipticalPosition.X, NewEllipticalPosition.Y, GetActorLocation().Z);
@@ -99,7 +99,7 @@ FVector AAMovingPlatform::SetEllipticalPosition(FVector2D Centre_h_k, FVector2D 
 	return FVector();
 }
 
-FVector2D AAMovingPlatform::GetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t)
+FVector2D AAMovingPlatform::GetEllipticalPosition(FVector2D InCentre, FVector2D InLength, float InTime)
 {
 	float x = Centre_h_k.X + Length_a_b.X * cos(Time_t);
 	float y = Centre_h_k.Y + Length_a_b.Y * sin(Time_t);

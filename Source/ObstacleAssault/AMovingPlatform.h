@@ -29,8 +29,8 @@ public:
 
 	float GetDistanceMoved();
 
-	FVector2D GetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t);
-	FVector SetEllipticalPosition(FVector2D Centre_h_k, FVector2D Length_a_b, float Time_t);
+	FVector2D GetEllipticalPosition(FVector2D InCentre, FVector2D InLength, float InTime);
+	FVector SetEllipticalPosition(FVector2D InCentre, FVector2D InLength, float InTime);
 
 public:
 
